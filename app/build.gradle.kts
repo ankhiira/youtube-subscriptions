@@ -53,6 +53,15 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
 
+    implementation(libs.play.services.auth)
+//    implementation("com.google.api-client:google-api-client-android:2.2.0")
+//    implementation("com.google.http-client:google-http-client-gson:1.43.3")
+//
+//    implementation("com.google.apis:google-api-services-youtube:v3-rev222-1.25.0")
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

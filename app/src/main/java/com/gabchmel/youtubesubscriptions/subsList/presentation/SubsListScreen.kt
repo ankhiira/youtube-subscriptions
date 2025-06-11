@@ -19,6 +19,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.gabchmel.youtubesubscriptions.subsList.presentation.components.SubscriptionItem
 import com.gabchmel.youtubesubscriptions.subsList.presentation.model.SubsListEvent
 import com.gabchmel.youtubesubscriptions.subsList.presentation.model.SubsListUiState
+import com.gabchmel.youtubesubscriptions.subsList.presentation.model.SubscriptionUiState
 import com.gabchmel.youtubesubscriptions.ui.theme.YoutubeSubscriptionsTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -76,7 +77,15 @@ fun SubsListScreenContent(
 fun SubsListScreenContentPreview() {
     YoutubeSubscriptionsTheme {
         SubsListScreenContent(
-            uiState = SubsListUiState(),
+            uiState = SubsListUiState(
+                subscriptions = listOf(
+                    SubscriptionUiState(
+                        id = "1",
+                        title = "test",
+                        thumbnail = ""
+                    )
+                )
+            ),
             onEvent = {}
         )
     }
