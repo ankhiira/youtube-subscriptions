@@ -3,8 +3,8 @@
 //import androidx.paging.Pager
 //import androidx.paging.PagingConfig
 //import androidx.paging.PagingData
-//import com.gabchmel.youtubesubscriptions.auth.model.ChannelDetails
-//import com.gabchmel.youtubesubscriptions.auth.model.Subscription
+//import com.gabchmel.youtubesubscriptions.subscriptionsList.data.model.ChannelDetails
+//import com.gabchmel.youtubesubscriptions.subscriptionsList.data.model.Subscription
 //import com.gabchmel.youtubesubscriptions.subscriptionsList.data.AuthManager
 //import com.gabchmel.youtubesubscriptions.subscriptionsList.data.YouTubeApi
 //import com.gabchmel.youtubesubscriptions.subscriptionsList.data.YoutubeRepository
