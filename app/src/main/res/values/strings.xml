@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Youtube Subscriptions</string>
+
+    <string name="channel_details">Channel Details</string>
+    <string name="navigate_back">Navigate back</string>
+    <string name="channel_thumbnail">Channel thumbnail</string>
+    <string name="published_on">Published on: %1$s</string>
+    <string name="your_server_client_id">212234216487-6ug97g2bjssfpss9s0boartfd280gge7.apps.googleusercontent.com</string>
 </resources>
