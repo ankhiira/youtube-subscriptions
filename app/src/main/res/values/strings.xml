@@ -6,4 +6,10 @@
     <string name="channel_thumbnail">Channel thumbnail</string>
     <string name="published_on">Published on: %1$s</string>
     <string name="your_server_client_id">212234216487-6ug97g2bjssfpss9s0boartfd280gge7.apps.googleusercontent.com</string>
+    <string name="profile_button_sign_out">Sign Out</string>
+    <string name="profile_text_default_no_email">No Email Provided</string>
+    <string name="profile_text_default_no_name">No Name Provided</string>
+    <string name="profile_content_description_user_picture">User Profile Picture</string>
+    <string name="profile_top_bar_title_my_profile">My Profile</string>
+    <string name="subscription_detail_error_id_not_found">Subscription ID not found.</string>
 </resources>

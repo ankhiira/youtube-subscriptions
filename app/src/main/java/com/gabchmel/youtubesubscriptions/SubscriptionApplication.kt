@@ -1,8 +1,11 @@
 package com.gabchmel.youtubesubscriptions
 
 import android.app.Application
-import com.gabchmel.youtubesubscriptions.di.appModule
-import com.gabchmel.youtubesubscriptions.di.viewModelModule
+import com.gabchmel.youtubesubscriptions.auth.di.authModule
+import com.gabchmel.youtubesubscriptions.core.di.appModule
+import com.gabchmel.youtubesubscriptions.core.di.storageModule
+import com.gabchmel.youtubesubscriptions.profile.di.profileModule
+import com.gabchmel.youtubesubscriptions.subscription.di.subscriptionModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -17,7 +20,10 @@ class SubscriptionApplication : Application() {
             androidContext(this@SubscriptionApplication)
             modules(
                 appModule,
-                viewModelModule
+                storageModule,
+                authModule,
+                subscriptionModule,
+                profileModule
             )
         }
     }

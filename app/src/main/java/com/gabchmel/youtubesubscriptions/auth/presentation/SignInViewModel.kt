@@ -6,7 +6,7 @@ import android.util.Log
 import androidx.activity.result.ActivityResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.gabchmel.youtubesubscriptions.auth.data.AuthRepository
+import com.gabchmel.youtubesubscriptions.auth.domain.AuthRepository
 import kotlinx.coroutines.launch
 
 class SignInViewModel(
