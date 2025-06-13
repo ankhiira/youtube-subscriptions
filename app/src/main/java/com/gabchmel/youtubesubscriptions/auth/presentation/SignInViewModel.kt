@@ -7,17 +7,26 @@ import androidx.activity.result.ActivityResult
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gabchmel.youtubesubscriptions.auth.domain.AuthRepository
+import com.gabchmel.youtubesubscriptions.auth.domain.use_cases.ObserveAuthStateUseCase
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class SignInViewModel(
+    observeAuthStateUseCase: ObserveAuthStateUseCase,
     private val authRepository: AuthRepository
 ): ViewModel() {
 
-    val user = authRepository.user
+    val userProfile = observeAuthStateUseCase()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = null
+        )
 
     init {
         viewModelScope.launch {
-            authRepository.silentSignIn()
+            authRepository.automaticSignIn()
         }
     }
 

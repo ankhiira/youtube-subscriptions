@@ -27,7 +27,7 @@ fun SignInScreen(
     viewModel: SignInViewModel = koinViewModel(),
     navController: NavController
 ) {
-    val signedInUser by viewModel.user.collectAsStateWithLifecycle()
+    val signedInUser by viewModel.userProfile.collectAsStateWithLifecycle()
 
     val signInLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()

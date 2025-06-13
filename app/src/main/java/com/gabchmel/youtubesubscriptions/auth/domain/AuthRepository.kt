@@ -9,7 +9,7 @@ interface AuthRepository {
 
     val user: StateFlow<UserProfile?>
 
-    suspend fun silentSignIn()
+    suspend fun automaticSignIn()
     fun getSignInIntent(): Intent
     suspend fun handleSignInResult(intent: Intent?): SignInResult
     suspend fun signOut()

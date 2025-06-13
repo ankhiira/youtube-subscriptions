@@ -21,7 +21,6 @@ fun SortActionMenu(
 ) {
     var isMenuExpanded by remember { mutableStateOf(false) }
 
-    // Box is used to anchor the DropdownMenu to the IconButton
     Box {
         IconButton(onClick = { isMenuExpanded = true }) {
             Icon(Icons.Default.List, contentDescription = "Sort Subscriptions")
@@ -31,13 +30,12 @@ fun SortActionMenu(
             expanded = isMenuExpanded,
             onDismissRequest = { isMenuExpanded = false }
         ) {
-            // Reusing the logic from your SortOrderDropdown
             SortOrder.entries.forEach { sortOrder ->
                 DropdownMenuItem(
-                    text = { Text(sortOrder.name) }, // Using displayName for readability
+                    text = { Text(sortOrder.name) },
                     onClick = {
                         onSortOrderSelected(sortOrder)
-                        isMenuExpanded = false // Close menu after selection
+                        isMenuExpanded = false
                     }
                 )
             }

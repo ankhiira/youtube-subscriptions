@@ -29,7 +29,6 @@ fun SearchAppBarContent(
 ) {
     val focusRequester = remember { FocusRequester() }
 
-    // Request focus for the text field when the search bar appears
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
     }
@@ -44,7 +43,6 @@ fun SearchAppBarContent(
                 onValueChange = onQueryChange,
                 placeholder = { Text("Search subscriptions...") },
                 singleLine = true,
-                // Make the text field blend into the app bar
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
@@ -60,14 +58,12 @@ fun SearchAppBarContent(
             }
         },
         actions = {
-            // Show a "clear" button only if there is text to clear
             if (query.isNotEmpty()) {
                 IconButton(onClick = { onQueryChange("") }) {
                     Icon(Icons.Default.Close, contentDescription = "Clear Search")
                 }
             }
         },
-        // To prevent the default app bar color from showing behind the transparent TextField
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = TopAppBarDefaults.topAppBarColors().containerColor
         )

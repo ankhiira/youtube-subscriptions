@@ -45,7 +45,7 @@ fun ProfileScreen(
     onNavigateBack: () -> Unit,
     onSignOut: () -> Unit
 ) {
-    val profile by viewModel.user.collectAsStateWithLifecycle()
+    val profile by viewModel.userProfile.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.navigationEvent.collect { event ->

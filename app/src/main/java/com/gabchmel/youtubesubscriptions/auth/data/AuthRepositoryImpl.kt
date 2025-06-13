@@ -2,11 +2,10 @@ package com.gabchmel.youtubesubscriptions.auth.data
 
 import android.content.Context
 import android.content.Intent
+import com.gabchmel.youtubesubscriptions.auth.data.data_source.UserSessionDataSource
 import com.gabchmel.youtubesubscriptions.auth.data.mapper.toUserProfile
 import com.gabchmel.youtubesubscriptions.auth.domain.AuthRepository
-import com.gabchmel.youtubesubscriptions.core.data.AuthHolder
 import com.gabchmel.youtubesubscriptions.core.data.TokenProvider
-import com.gabchmel.youtubesubscriptions.core.domain.UserProfile
 import com.google.android.gms.auth.GoogleAuthUtil
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -15,13 +14,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Scope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext
 
 class AuthRepositoryImpl(
     private val context: Context,
-    private val tokenProvider: TokenProvider
+    private val tokenProvider: TokenProvider,
+    private val userSessionDataSource: UserSessionDataSource
 ) : AuthRepository {
 
     private val googleSignInClient: GoogleSignInClient by lazy {
@@ -32,10 +30,9 @@ class AuthRepositoryImpl(
         GoogleSignIn.getClient(context, gso)
     }
 
-    private val _user = MutableStateFlow<UserProfile?>(null)
-    override val user = _user.asStateFlow()
+    override val user = userSessionDataSource.userProfile
 
-    override suspend fun silentSignIn() {
+    override suspend fun automaticSignIn() {
         val account = GoogleSignIn.getLastSignedInAccount(context)
         if (account != null) {
             handleSuccessfulSignIn(account)
@@ -78,14 +75,14 @@ class AuthRepositoryImpl(
                     )
                 }
 
-                AuthHolder.setAccount(account)
                 if (token != null) {
                     tokenProvider.saveToken(token)
                 }
 
-                _user.value = account.toUserProfile()
+                val userProfile = account.toUserProfile()
+                userSessionDataSource.updateUser(userProfile)
 
-                SignInResult(user = _user.value, errorMessage = null)
+                SignInResult(user = userProfile, errorMessage = null)
             } catch (e: Exception) {
                 clearAuthState()
                 SignInResult(
@@ -97,7 +94,7 @@ class AuthRepositoryImpl(
     }
 
     private fun clearAuthState() {
-        _user.value = null
+        userSessionDataSource.clearSession()
         tokenProvider.clearToken()
     }
 
