@@ -8,25 +8,39 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gabchmel.youtubesubscriptions.auth.domain.AuthRepository
 import com.gabchmel.youtubesubscriptions.auth.domain.use_cases.ObserveAuthStateUseCase
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SignInViewModel(
     observeAuthStateUseCase: ObserveAuthStateUseCase,
     private val authRepository: AuthRepository
-): ViewModel() {
+) : ViewModel() {
 
-    val userProfile = observeAuthStateUseCase()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = null
-        )
+    private val _uiState = MutableStateFlow(SignInState(isLoading = true))
+    val uiState = _uiState.asStateFlow()
 
     init {
+        observeAuthStateUseCase()
+            .onEach { userProfile ->
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        userProfile = userProfile,
+                        isLoading = false
+                    )
+                }
+            }
+            .launchIn(viewModelScope)
+
         viewModelScope.launch {
-            authRepository.automaticSignIn()
+            try {
+                authRepository.automaticSignIn()
+            } catch (_: Exception) {
+                _uiState.update { it.copy(isLoading = false) }
+            }
         }
     }
 
@@ -37,9 +51,14 @@ class SignInViewModel(
     fun handleSignInResult(result: ActivityResult) {
         if (result.resultCode == Activity.RESULT_OK) {
             viewModelScope.launch {
-                val signInResult = authRepository.handleSignInResult(result.data)
-                if (!signInResult.isSuccess) {
-                    Log.w("AuthViewModel", "Sign-in failed: ${signInResult.errorMessage}")
+                _uiState.update { it.copy(isLoading = true) }
+                try {
+                    val signInResult = authRepository.handleSignInResult(result.data)
+                    if (!signInResult.isSuccess) {
+                        _uiState.update { it.copy(isLoading = false) }
+                    }
+                } catch (_: Exception) {
+                    _uiState.update { it.copy(isLoading = false) }
                 }
             }
         } else {

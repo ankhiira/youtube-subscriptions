@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,7 +28,7 @@ fun SignInScreen(
     viewModel: SignInViewModel = koinViewModel(),
     navController: NavController
 ) {
-    val signedInUser by viewModel.userProfile.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     val signInLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
@@ -35,8 +36,8 @@ fun SignInScreen(
         viewModel.handleSignInResult(result)
     }
 
-    LaunchedEffect(key1 = signedInUser) {
-        if (signedInUser != null) {
+    LaunchedEffect(key1 = uiState.userProfile) {
+        if (uiState.userProfile != null) {
             navController.navigate(Screen.SubscriptionList.route)
         }
     }
@@ -45,26 +46,37 @@ fun SignInScreen(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        if (signedInUser == null) {
-            Column {
-                Button(onClick = {
-                    signInLauncher.launch(viewModel.getSignInIntent())
-                }) {
-                    Text("Sign in with Google")
+        when {
+            uiState.isLoading -> {
+                CircularProgressIndicator()
+            }
+
+            uiState.userProfile != null -> {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = "Welcome, ${uiState.userProfile?.name}",
+                        style = MaterialTheme.typography.headlineSmall
+                    )
+                    Text(
+                        text = "${uiState.userProfile?.email}",
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    Spacer(modifier = Modifier.height(32.dp))
                 }
             }
-        } else {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = "Welcome, ${signedInUser?.name}",
-                    style = MaterialTheme.typography.headlineSmall
-                )
-                Text(text = "${signedInUser?.email}", style = MaterialTheme.typography.bodyLarge)
-                Spacer(modifier = Modifier.height(32.dp))
+
+            else -> {
+                Column {
+                    Button(onClick = {
+                        signInLauncher.launch(viewModel.getSignInIntent())
+                    }) {
+                        Text("Sign in with Google")
+                    }
+                }
             }
         }
     }
