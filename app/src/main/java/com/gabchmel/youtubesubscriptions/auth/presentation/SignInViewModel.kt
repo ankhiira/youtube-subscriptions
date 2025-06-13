@@ -10,8 +10,6 @@ import com.gabchmel.youtubesubscriptions.auth.domain.AuthRepository
 import com.gabchmel.youtubesubscriptions.auth.domain.use_cases.ObserveAuthStateUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -24,22 +22,21 @@ class SignInViewModel(
     val uiState = _uiState.asStateFlow()
 
     init {
-        observeAuthStateUseCase()
-            .onEach { userProfile ->
-                _uiState.update { currentState ->
-                    currentState.copy(
-                        userProfile = userProfile,
-                        isLoading = false
-                    )
-                }
-            }
-            .launchIn(viewModelScope)
-
         viewModelScope.launch {
             try {
                 authRepository.automaticSignIn()
+
+                observeAuthStateUseCase()
+                    .collect { userProfile ->
+                        _uiState.update {
+                            it.copy(
+                                userProfile = userProfile,
+                                isLoading = false // Loading is now definitely false
+                            )
+                        }
+                    }
             } catch (_: Exception) {
-                _uiState.update { it.copy(isLoading = false) }
+                _uiState.update { it.copy(isLoading = false, userProfile = null) }
             }
         }
     }
