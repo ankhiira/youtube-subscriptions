@@ -21,9 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.gabchmel.youtubesubscriptions.subscription.presentation.subscription_list.components.DefaultAppBar
-import com.gabchmel.youtubesubscriptions.subscription.presentation.subscription_list.components.SearchAppBar
 import com.gabchmel.youtubesubscriptions.subscription.presentation.subscription_list.components.SubscriptionCard
+import com.gabchmel.youtubesubscriptions.subscription.presentation.subscription_list.components.SubscriptionListTopAppBar
 import com.gabchmel.youtubesubscriptions.subscription.presentation.subscription_list.model.SubscriptionListEvent
 import com.gabchmel.youtubesubscriptions.subscription.presentation.subscription_list.model.SubscriptionListState
 import org.koin.androidx.compose.koinViewModel
@@ -63,20 +62,18 @@ fun SubsListScreenContent(
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-            if (isSearchActive) {
-                SearchAppBar(
-                    query = uiState.searchQuery,
-                    onQueryChange = { newQuery -> onEvent(SubscriptionListEvent.SearchQueryChanged(newQuery)) },
-                    onClose = { isSearchActive = false }
-                )
-            } else {
-                DefaultAppBar(
-                    uiState = uiState,
-                    onEvent = onEvent,
-                    onSearchClick = { isSearchActive = true },
-                    onProfileClick = onProfileClick
-                )
-            }
+            SubscriptionListTopAppBar(
+                uiState = uiState,
+                onEvent = onEvent,
+                isSearchActive = isSearchActive,
+                onToggleSearch = {
+                    if (isSearchActive) {
+                        onEvent(SubscriptionListEvent.SearchQueryChanged(""))
+                    }
+                    isSearchActive = !isSearchActive
+                },
+                onProfileClick = onProfileClick
+            )
         }
     ) { innerPadding ->
         Box(
@@ -110,7 +107,6 @@ fun SubsListScreenContent(
                                 subscription = subscription,
                                 onClick = {
                                     onSubscriptionClick(subscription.id)
-//                                    onEvent(SubsListEvent.SubscriptionClicked(subscription))
                                 }
                             )
                         }

@@ -2,19 +2,18 @@ package com.gabchmel.youtubesubscriptions.auth.data
 
 import android.content.Context
 import android.content.Intent
-import com.gabchmel.youtubesubscriptions.auth.domain.AuthRepository
-import com.gabchmel.youtubesubscriptions.auth.data.SignInResult
 import com.gabchmel.youtubesubscriptions.auth.data.mapper.toUserProfile
+import com.gabchmel.youtubesubscriptions.auth.domain.AuthRepository
+import com.gabchmel.youtubesubscriptions.core.data.AuthHolder
+import com.gabchmel.youtubesubscriptions.core.data.TokenProvider
+import com.gabchmel.youtubesubscriptions.core.domain.UserProfile
+import com.google.android.gms.auth.GoogleAuthUtil
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Scope
-import com.gabchmel.youtubesubscriptions.core.domain.UserProfile
-import com.gabchmel.youtubesubscriptions.core.data.AuthHolder
-import com.gabchmel.youtubesubscriptions.core.data.TokenProvider
-import com.google.android.gms.auth.GoogleAuthUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -39,7 +38,6 @@ class AuthRepositoryImpl(
     override suspend fun silentSignIn() {
         val account = GoogleSignIn.getLastSignedInAccount(context)
         if (account != null) {
-            // A user was previously signed in. We can try to refresh the token.
             handleSuccessfulSignIn(account)
         }
     }
@@ -54,7 +52,6 @@ class AuthRepositoryImpl(
             val account = task.getResult(ApiException::class.java)
             handleSuccessfulSignIn(account)
         } catch (e: ApiException) {
-            // Sign-in failed. Clear any existing state.
             clearAuthState()
             SignInResult(
                 user = null,

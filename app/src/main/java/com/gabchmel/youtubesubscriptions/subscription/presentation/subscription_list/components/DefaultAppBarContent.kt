@@ -10,12 +10,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import com.gabchmel.youtubesubscriptions.subscription.presentation.subscription_list.model.SubscriptionListEvent
-import com.gabchmel.youtubesubscriptions.subscription.presentation.subscription_list.model.SubscriptionListState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DefaultAppBar(
-    uiState: SubscriptionListState,
+fun DefaultAppBarContent(
     onEvent: (SubscriptionListEvent) -> Unit,
     onSearchClick: () -> Unit,
     onProfileClick: () -> Unit
@@ -23,20 +21,16 @@ fun DefaultAppBar(
     TopAppBar(
         title = { Text(text = "My Subscriptions") },
         actions = {
-            // Search Icon
             IconButton(onClick = onSearchClick) {
                 Icon(Icons.Default.Search, contentDescription = "Search Subscriptions")
             }
 
-            // Sort Dropdown
-            SortOrderDropdown(
-                currentSortOrder = uiState.sortOrder,
-                onSortOrderSelected = { newSort ->
-                    onEvent(SubscriptionListEvent.ChangeSortOrder(newSort))
+            SortActionMenu(
+                onSortOrderSelected = { newOrder ->
+                    onEvent(SubscriptionListEvent.ChangeSortOrder(newOrder))
                 }
             )
 
-            // Profile Icon
             IconButton(onClick = onProfileClick) {
                 Icon(Icons.Filled.Person, contentDescription = "Profile")
             }
