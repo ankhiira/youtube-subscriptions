@@ -63,7 +63,7 @@ fun SubscriptionItemDto.toSubscriptionDetail(): SubscriptionDetail {
     return SubscriptionDetail(
         title = this.snippet.title,
         description = this.snippet.description,
-        thumbnailUrl = this.snippet.thumbnails.medium.url,
+        thumbnailUrl = this.snippet.thumbnails.high.url,
         publishedAt = convertUtcIsoToLocalDateTimeString(this.snippet.publishedAt)
     )
 }

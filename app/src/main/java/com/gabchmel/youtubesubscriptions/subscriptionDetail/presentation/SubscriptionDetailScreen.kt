@@ -47,7 +47,7 @@ fun SubscriptionDetailScreen(
             TopAppBar(
                 title = { Text("Channel Details") },
                 navigationIcon = {
-                    IconButton(onClick = onNavigateBack) { // Back button
+                    IconButton(onClick = onNavigateBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
                     }
                 }
@@ -91,7 +91,6 @@ fun SubscriptionDetailsContent(
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Thumbnail Image
         item {
             AsyncImage(
                 model = subscriptionDetail.thumbnailUrl,
@@ -100,15 +99,14 @@ fun SubscriptionDetailsContent(
                     .fillMaxWidth()
                     .aspectRatio(16f / 9f)
                     .clip(MaterialTheme.shapes.medium),
-                contentScale = ContentScale.Crop,
-//                placeholder = painterResource(id = R.drawable.placeholder_image) // Optional placeholder
+                contentScale = ContentScale.Crop
             )
         }
 
-        // Channel Title
         item {
             Text(
                 text = subscriptionDetail.title,
+                modifier = Modifier.padding(horizontal = 8.dp),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold
             )
@@ -117,18 +115,22 @@ fun SubscriptionDetailsContent(
         item {
             Text(
                 text = stringResource(R.string.published_on, subscriptionDetail.publishedAt),
+                modifier = Modifier.padding(horizontal = 8.dp),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
 
         item {
-            HorizontalDivider()
+            HorizontalDivider(
+                modifier = Modifier.padding(horizontal = 8.dp)
+            )
         }
 
         item {
             Text(
                 text = subscriptionDetail.description,
+                modifier = Modifier.padding(horizontal = 8.dp),
                 style = MaterialTheme.typography.bodyLarge
             )
         }

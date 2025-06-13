@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Youtube Subscriptions</string>
+    <string name="app_name">Subscriptions</string>
 
     <string name="channel_details">Channel Details</string>
     <string name="navigate_back">Navigate back</string>
