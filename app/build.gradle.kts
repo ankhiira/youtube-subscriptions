@@ -2,9 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("com.google.devtools.ksp") version "2.1.21-2.0.2"
-    id("de.jensklingenberg.ktorfit") version "2.5.2"
-    kotlin("plugin.serialization") version "2.1.21"
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.ktorfit)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -51,21 +51,14 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
 
-//    implementation("com.google.api-client:google-api-client-android:2.2.0")
-//    implementation("com.google.http-client:google-http-client-gson:1.43.3")
-//
-//    implementation("com.google.apis:google-api-services-youtube:v3-rev222-1.25.0")
-    implementation(libs.androidx.credentials)
-    implementation(libs.androidx.credentials.play.services.auth)
-    implementation(libs.googleid)
-
-    implementation(libs.androidx.core.ktx.v1120)
-    implementation(libs.androidx.activity.compose.v182)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     // Google Sign-In
     implementation(libs.play.services.auth)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
 
     // Ktorfit & Ktor
     implementation(libs.ktorfit.lib)
@@ -84,7 +77,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-    // Coil for Image Loading
+    // Coil
     implementation(libs.coil.compose)
 
     testImplementation(libs.junit)
