@@ -17,9 +17,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.gabchmel.youtubesubscriptions.R
 import com.gabchmel.youtubesubscriptions.core.presentation.navigation.Screen
 import org.koin.androidx.compose.koinViewModel
 
@@ -58,7 +60,10 @@ fun SignInScreen(
                 ) {
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = "Welcome, ${uiState.userProfile?.name}",
+                        text = stringResource(
+                            R.string.sign_in_welcome,
+                            uiState.userProfile?.name ?: "Unknown"
+                        ),
                         style = MaterialTheme.typography.headlineSmall
                     )
                     Text(
@@ -74,7 +79,7 @@ fun SignInScreen(
                     Button(onClick = {
                         signInLauncher.launch(viewModel.getSignInIntent())
                     }) {
-                        Text("Sign in with Google")
+                        Text(stringResource(R.string.sign_in_button_sign_in))
                     }
                 }
             }

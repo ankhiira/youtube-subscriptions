@@ -12,4 +12,6 @@
     <string name="subscription_detail_error_id_not_found">Subscription ID not found.</string>
     <string name="subscription_detail_thumbnail">Subscription thumbnail</string>
     <string name="subscription_detail_published_on">Published on: %1$s</string>
+    <string name="sign_in_welcome">Welcome, %1$s</string>
+    <string name="sign_in_button_sign_in">Sign in with Google</string>
 </resources>

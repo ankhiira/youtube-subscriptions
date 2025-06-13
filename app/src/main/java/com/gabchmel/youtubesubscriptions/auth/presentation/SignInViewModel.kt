@@ -31,7 +31,7 @@ class SignInViewModel(
                         _uiState.update {
                             it.copy(
                                 userProfile = userProfile,
-                                isLoading = false // Loading is now definitely false
+                                isLoading = false
                             )
                         }
                     }
